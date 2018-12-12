@@ -9,18 +9,33 @@ import {
   theme,
   colors,
   unselectable,
+  font,
+  breakpoint,
 } from '@aragon/ui'
 import AppLayout from '../../components/AppLayout/AppLayout'
+import MenuButton from '../../components/MenuPanel/MenuButton'
+import { isMobile } from '../../utils'
 
 import defaultIcon from './icons/default.png'
 import payrollIcon from './icons/payroll.png'
 import espressoIcon from './icons/espresso.png'
 
 class Apps extends React.Component {
+  handleMenuPanelOpen = () => {
+    this.props.onMessage({
+      data: { from: 'app', name: 'menuPanel', value: true },
+    })
+  }
+
   render() {
     return (
       <AppLayout
-        title="Apps"
+        title={
+          <AppBarTitle>
+            {isMobile() && <MenuButton onClick={this.handleMenuPanelOpen} />}
+            <AppBarLabel>Apps</AppBarLabel>
+          </AppBarTitle>
+        }
         endContent={
           <DevPortalAnchor
             mode="strong"
@@ -71,6 +86,24 @@ class Apps extends React.Component {
     )
   }
 }
+
+const AppBarTitle = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: -30px;
+`
+
+const AppBarLabel = styled.span`
+  margin-left: 0.5em;
+  ${font({ size: 'xxlarge' })};
+
+  ${breakpoint(
+    'medium',
+    `
+      margin-left: 1.5em;
+    `
+  )};
+`
 
 const DevPortalAnchor = styled(Button.Anchor)`
   display: block;
