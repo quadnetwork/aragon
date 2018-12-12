@@ -1,8 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { DropDown, Button, Field, TextInput } from '@aragon/ui'
+import {
+  DropDown,
+  Button,
+  Field,
+  TextInput,
+  font,
+  breakpoint,
+} from '@aragon/ui'
 import AppLayout from '../../components/AppLayout/AppLayout'
+import MenuButton from '../../components/MenuPanel/MenuButton'
 import { defaultEthNode, ipfsDefaultConf } from '../../environment'
 import {
   getSelectedCurrency,
@@ -10,7 +18,7 @@ import {
   setIpfsGateway,
   setSelectedCurrency,
 } from '../../local-settings'
-import { noop } from '../../utils'
+import { noop, isMobile } from '../../utils'
 import { DaoAddressType } from '../../prop-types'
 import DaoSettings from './DaoSettings'
 import Option from './Option'
@@ -74,6 +82,13 @@ class Settings extends React.Component {
     window.localStorage.clear()
     window.location.reload()
   }
+
+  handleMenuPanelOpen = () => {
+    this.props.onMessage({
+      data: { from: 'app', name: 'menuPanel', value: true },
+    })
+  }
+
   render() {
     const {
       account,
@@ -90,7 +105,14 @@ class Settings extends React.Component {
       selectedCurrency,
     } = this.state
     return (
-      <AppLayout title="Settings">
+      <AppLayout
+        title={
+          <AppBarTitle>
+            {isMobile() && <MenuButton onClick={this.handleMenuPanelOpen} />}
+            <AppBarLabel>Settings</AppBarLabel>
+          </AppBarTitle>
+        }
+      >
         <Content>
           <DaoSettings
             apps={apps}
@@ -164,5 +186,23 @@ class Settings extends React.Component {
     )
   }
 }
+
+const AppBarTitle = styled.span`
+  display: flex;
+  align-items: center;
+  margin-left: -30px;
+`
+
+const AppBarLabel = styled.span`
+  margin-left: 0.5em;
+  ${font({ size: 'xxlarge' })};
+
+  ${breakpoint(
+    'medium',
+    `
+      margin-left: 1.5em;
+    `
+  )};
+`
 
 export default Settings
