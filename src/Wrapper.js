@@ -228,7 +228,7 @@ class Wrapper extends React.Component {
     }
 
     if (instanceId === 'apps') {
-      return <Apps />
+      return <Apps onMessage={this.handleAppIFrameMessage} />
     }
 
     if (instanceId === 'settings') {
