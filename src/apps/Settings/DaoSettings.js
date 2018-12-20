@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Button, Field, Text, IdentityBadge } from '@aragon/ui'
 import { appIds, network } from '../../environment'
 import { sanitizeNetworkType } from '../../network-config'
-import { noop } from '../../utils'
+import { noop, isMobile } from '../../utils'
 import { DaoAddressType } from '../../prop-types'
 import { toChecksumAddress } from '../../web3-utils'
 import airdrop, { testTokensEnabled } from '../../testnet/airdrop'
@@ -60,7 +60,7 @@ class DaoSettings extends React.Component {
             <IdentityBadge
               entity={checksummedDaoAddr}
               networkType={network.type}
-              shorten={false}
+              shorten={isMobile()}
             />
             <Note>
               <strong>Do not send ether or tokens to this address!</strong>
@@ -128,7 +128,7 @@ class DaoSettings extends React.Component {
                       <IdentityBadge
                         entity={checksummedProxyAddress}
                         networkType={network.type}
-                        shorten={false}
+                        shorten={isMobile()}
                       />
                     </Field>
                   </li>
