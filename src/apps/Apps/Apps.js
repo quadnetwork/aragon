@@ -14,7 +14,7 @@ import {
 } from '@aragon/ui'
 import AppLayout from '../../components/AppLayout/AppLayout'
 import MenuButton from '../../components/MenuPanel/MenuButton'
-import { isMobile } from '../../utils'
+import { isSmallScreen } from '../../utils'
 
 import defaultIcon from './icons/default.png'
 import payrollIcon from './icons/payroll.png'
@@ -32,7 +32,9 @@ class Apps extends React.Component {
       <AppLayout
         title={
           <AppBarTitle>
-            {isMobile() && <MenuButton onClick={this.handleMenuPanelOpen} />}
+            {isSmallScreen() && (
+              <MenuButton onClick={this.handleMenuPanelOpen} />
+            )}
             <AppBarLabel>Apps</AppBarLabel>
           </AppBarTitle>
         }

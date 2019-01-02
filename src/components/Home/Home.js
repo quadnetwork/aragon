@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Spring, animated } from 'react-spring'
 import { theme, AppView, AppBar, Text, font, breakpoint } from '@aragon/ui'
 import HomeCard from './HomeCard'
-import { isMobile } from '../../utils'
+import { isSmallScreen } from '../../utils'
 import { lerp } from '../../math-utils'
 import springs from '../../springs'
 import MenuButton from '../MenuPanel/MenuButton'
@@ -109,7 +109,7 @@ class Home extends React.Component {
             appBar={
               <AppBar>
                 <AppBarTitle>
-                  {isMobile() && (
+                  {isSmallScreen() && (
                     <MenuButton onClick={this.handleMenuPanelOpen} />
                   )}
                   <AppBarLabel>Home</AppBarLabel>

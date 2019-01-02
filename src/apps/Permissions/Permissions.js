@@ -10,7 +10,7 @@ import {
   breakpoint,
 } from '@aragon/ui'
 import { addressesEqual, shortenAddress, isAddress } from '../../web3-utils'
-import { isMobile } from '../../utils'
+import { isSmallScreen } from '../../utils'
 import Screen from './Screen'
 import Home from './Home/Home'
 import AppPermissions from './AppPermissions'
@@ -219,9 +219,9 @@ class Permissions extends React.Component {
                       </Button>
                     }
                   >
-                    {isMobile() && navigationItems.length === 1 ? (
+                    {isSmallScreen() && navigationItems.length === 1 ? (
                       <AppBarTitle>
-                        {isMobile() && (
+                        {isSmallScreen() && (
                           <MenuButton onClick={this.handleMenuPanelOpen} />
                         )}
                         <AppBarLabel>Permissions</AppBarLabel>

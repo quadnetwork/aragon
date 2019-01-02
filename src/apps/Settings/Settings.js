@@ -18,7 +18,7 @@ import {
   setIpfsGateway,
   setSelectedCurrency,
 } from '../../local-settings'
-import { noop, isMobile } from '../../utils'
+import { noop, isSmallScreen } from '../../utils'
 import { DaoAddressType } from '../../prop-types'
 import DaoSettings from './DaoSettings'
 import Option from './Option'
@@ -108,7 +108,9 @@ class Settings extends React.Component {
       <AppLayout
         title={
           <AppBarTitle>
-            {isMobile() && <MenuButton onClick={this.handleMenuPanelOpen} />}
+            {isSmallScreen() && (
+              <MenuButton onClick={this.handleMenuPanelOpen} />
+            )}
             <AppBarLabel>Settings</AppBarLabel>
           </AppBarTitle>
         }
