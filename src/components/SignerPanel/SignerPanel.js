@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { SidePanel } from '@aragon/ui'
 import { Transition, animated } from 'react-spring'
 import { addressesEqual } from '../../web3-utils'
-import { noop } from '../../utils'
+import { noop, isSmallScreen } from '../../utils'
 import ConfirmTransaction from './ConfirmTransaction'
 import SigningStatus from './SigningStatus'
 import { network } from '../../environment'
@@ -174,75 +174,93 @@ class SignerPanel extends React.Component {
     } = this.state
 
     return (
-      <SidePanel
-        onClose={this.handleSignerClose}
-        onTransitionEnd={this.handleSignerTransitionEnd}
-        opened={panelOpened}
-        title="Create transaction"
-      >
-        <Main>
-          <Transition
-            items={status === STATUS_CONFIRMING}
-            from={{ enterProgress: 0 }}
-            enter={{ enterProgress: 1 }}
-            leave={{ enterProgress: 0 }}
-            config={springs.lazy}
-          >
-            {confirming =>
-              confirming
-                ? ({ enterProgress }) => (
-                    <ScreenWrapper
-                      style={{
-                        transform: `
+      <ResponsiveSidePanel>
+        <SidePanel
+          onClose={this.handleSignerClose}
+          onTransitionEnd={this.handleSignerTransitionEnd}
+          opened={panelOpened}
+          title="Create transaction"
+        >
+          <Main>
+            <Transition
+              items={status === STATUS_CONFIRMING}
+              from={{ enterProgress: 0 }}
+              enter={{ enterProgress: 1 }}
+              leave={{ enterProgress: 0 }}
+              config={springs.lazy}
+            >
+              {confirming =>
+                confirming
+                  ? ({ enterProgress }) => (
+                      <ScreenWrapper
+                        style={{
+                          transform: `
                             translate3d(${-100 * (1 - enterProgress)}%, 0, 0)
                           `,
-                      }}
-                    >
-                      <Screen>
-                        <ConfirmTransaction
-                          direct={directPath}
-                          hasAccount={Boolean(account)}
-                          hasWeb3={Boolean(walletWeb3)}
-                          intent={intent}
-                          locator={locator}
-                          networkType={network.type}
-                          onClose={this.handleSignerClose}
-                          onRequestEnable={onRequestEnable}
-                          onSign={this.handleSign}
-                          paths={actionPaths}
-                          pretransaction={pretransaction}
-                          signingEnabled={status === STATUS_CONFIRMING}
-                          walletNetworkType={walletNetwork}
-                          walletProviderId={walletProviderId}
-                        />
-                      </Screen>
-                    </ScreenWrapper>
-                  )
-                : ({ enterProgress }) => (
-                    <ScreenWrapper
-                      style={{
-                        transform: `
+                        }}
+                      >
+                        <Screen>
+                          <ConfirmTransaction
+                            direct={directPath}
+                            hasAccount={Boolean(account)}
+                            hasWeb3={Boolean(walletWeb3)}
+                            intent={intent}
+                            locator={locator}
+                            networkType={network.type}
+                            onClose={this.handleSignerClose}
+                            onRequestEnable={onRequestEnable}
+                            onSign={this.handleSign}
+                            paths={actionPaths}
+                            pretransaction={pretransaction}
+                            signingEnabled={status === STATUS_CONFIRMING}
+                            walletNetworkType={walletNetwork}
+                            walletProviderId={walletProviderId}
+                          />
+                        </Screen>
+                      </ScreenWrapper>
+                    )
+                  : ({ enterProgress }) => (
+                      <ScreenWrapper
+                        style={{
+                          transform: `
                           translate3d(${100 * (1 - enterProgress)}%, 0, 0)
                         `,
-                      }}
-                    >
-                      <Screen>
-                        <SigningStatus
-                          status={status}
-                          signError={signError}
-                          onClose={this.handleSignerClose}
-                          walletProviderId={walletProviderId}
-                        />
-                      </Screen>
-                    </ScreenWrapper>
-                  )
-            }
-          </Transition>
-        </Main>
-      </SidePanel>
+                        }}
+                      >
+                        <Screen>
+                          <SigningStatus
+                            status={status}
+                            signError={signError}
+                            onClose={this.handleSignerClose}
+                            walletProviderId={walletProviderId}
+                          />
+                        </Screen>
+                      </ScreenWrapper>
+                    )
+              }
+            </Transition>
+          </Main>
+        </SidePanel>
+      </ResponsiveSidePanel>
     )
   }
 }
+
+const ResponsiveSidePanel = styled.div`
+  ${isSmallScreen() &&
+    `
+    & > div {
+      left: -90px;
+      right: 90px;
+    }
+
+    &&& aside {
+      position: relative;
+      width: 100%;
+      padding: 0;
+    }
+  `};
+`
 
 const Main = styled.div`
   position: relative;
